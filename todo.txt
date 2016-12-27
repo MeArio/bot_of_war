@@ -1,0 +1,7 @@
+-resize and move window to corner*
+-convert the board to a matrix
+ -grab the board*
+ -crop the board*
+ -determine each gem
+  -determine pixel color
+ -put data into matrix
