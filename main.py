@@ -2,14 +2,28 @@ import win32gui
 from PIL import ImageGrab
 from PIL import Image
 from PIL import ImageOps
-from numpy import *
+import numpy as np
 
 w_name = "Gems of War"
 board_box = (207, 71, 595, 566)
 tiles_per_row_collumn = 8
-colors = {'blue': (49, 208, 103), 'brown': (96, 62, 63),
-          'purple': (137, 25, 189), 'red': (203, 41, 52),
-          'green': (30, 117, 16), 'yellow': (228, 196, 79)}
+
+colors = {(49, 128, 203): 'blue',
+          (96, 62, 63): 'brown',
+          (137, 25, 189): 'purple',
+          (203, 41, 52): 'red',
+          (30, 117, 16): 'green',
+          (228, 196, 79): 'yellow',
+          (255, 255, 255): 'skull'}
+
+
+tiles = {'blue': 0,
+         'brown': 1,
+         'purple': 2,
+         'red': 3,
+         'green': 4,
+         'yellow': 5,
+         'skull': 6}
 
 
 # Checks to see if the game is opened.
@@ -35,14 +49,18 @@ def grab_board(bbox):
 
 
 def crop_board(board):
+    board_tiles = np.empty((tiles_per_row_collumn, tiles_per_row_collumn),
+                           dtype='object')
     width = board.size[0] / tiles_per_row_collumn
     height = board.size[1] / tiles_per_row_collumn
     for y in range(0, tiles_per_row_collumn):
         for x in range(0, tiles_per_row_collumn):
-            board.crop((x * width,
-                        y * height,
-                        (x + 1) * width,
-                        (y + 1) * height)).save(str(x) + "," + str(y) + ".png")
+            board_tiles[x, y] = board.crop((x * width,
+                                            y * height,
+                                            (x + 1) * width,
+                                            (y + 1) * height))
+
+    return board_tiles
 
 
 def most_frequent_colour(image):
@@ -60,4 +78,12 @@ def most_frequent_colour(image):
     return most_frequent_pixel
 
 
-# def board_to_array:
+def board_to_array(image_tiles):
+    board = np.zeros((tiles_per_row_collumn, tiles_per_row_collumn))
+    x = 0
+    y = 1
+    for coords, value in np.ndenumerate(image_tiles):
+        board[coords[x], coords[y]] = tiles[colors[most_frequent_colour(value)[1]]]
+        print(coords[x], coords[y])
+
+    return board
