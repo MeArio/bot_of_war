@@ -3,6 +3,6 @@ Include/
 Lib/
 Scripts/
 *.png
-/pyenv.cfg
+/pyvenv.cfg
 /pip-selfcheck.json
 /get
