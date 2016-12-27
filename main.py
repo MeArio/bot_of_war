@@ -21,9 +21,10 @@ def window_exists(name):
 
 
 def move_window_to_corner(name):
-    if win32gui.FindWindow(None, name) != 0:
-        win32gui.MoveWindow(hwnd, 0, 0, 800, 600, False)
-    else:
+    try:
+        win32gui.MoveWindow(win32gui.FindWindow(None, name), 0, 0, 800, 600,
+                            False)
+    except win32gui.error:
         return False
 
 
@@ -59,16 +60,4 @@ def most_frequent_colour(image):
     return most_frequent_pixel
 
 
-def board_to_array:
-
-
-
-'''if window_exists(w_name):
-    print("Yeah it does")
-    hwnd = win32gui.FindWindow(None, w_name)
-    win32gui.MoveWindow(hwnd, 0, 0, 800, 600, False)
-    board = grab_board(board_box)
-    crop_board(board)
-else:
-    print("It doesn't or you fucked up")
-'''
+# def board_to_array:
