@@ -4,3 +4,5 @@ Lib/
 Scripts/
 *.png
 pyenv.cfg
+pip-selfcheck.json
+get
